@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateTaskRequest;
 use App\Models\Task;
 use App\Services\TaskService;
 use Exception;
+use Illuminate\Http\Request;
 
 class TaskController extends BaseController
 {
@@ -20,9 +21,9 @@ class TaskController extends BaseController
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $tasks = $this->taskService->list();
+        $tasks = $this->taskService->list($request);
 
         return $this->successResponse($tasks);
     }

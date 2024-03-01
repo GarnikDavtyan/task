@@ -6,14 +6,26 @@ use App\Http\Requests\StoreTaskRequest;
 use App\Http\Requests\UpdateTaskRequest;
 use App\Models\Task;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\Request;
 
 class TaskService
 {
-    public function list(): Collection
+    public function list(Request $request): Collection
     {
-        $tasks = Task::all();
+        $tasks = Task::query();
 
-        return $tasks;
+        $status = $request->status;
+        $date = $request->date;
+
+        if ($status) {
+            $tasks->where('status', $status);
+        }
+
+        if ($date) {
+            $tasks->whereDate('created_at', $date);
+        }
+
+        return $tasks->get();
     }
 
     public function store(StoreTaskRequest $request): Task
